@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { BehaviorSubject, combineLatest, distinctUntilChanged, map } from 'rxjs';
-import { users } from '../../constants/constant';
 import { FormsModule } from '@angular/forms';
+
+import { USERS } from '../../constants/constant';
 
 @Component({
   selector: 'app-rxjs',
@@ -12,17 +14,18 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./rxjs.component.scss']
 })
 export class RxjsComponent {
-  readonly firstPage = 1;
-  itemsPerPage = 2;
-  searchInput$ = new BehaviorSubject('');
-  currentPage$ = new BehaviorSubject(this.firstPage);
+  private readonly firstPage = 1;
+  private itemsPerPage = 2;
+  public searchInput$ = new BehaviorSubject('');
+  public currentPage$ = new BehaviorSubject(this.firstPage);
 
-  paginatedAndFilteredUsers$ = combineLatest([
+  public paginatedAndFilteredUsers$ = combineLatest([
     this.currentPage$.pipe(distinctUntilChanged()),
     this.searchInput$.pipe(
       distinctUntilChanged(),
+      takeUntilDestroyed(),
       map((searchText: string) =>
-        users.filter((user: { name: string; }) =>
+        USERS.filter((user: { name: string; }) =>
           user.name.toLowerCase().includes(searchText.toLowerCase())
         )
       )
@@ -31,22 +34,27 @@ export class RxjsComponent {
     map(([currentPage, filteredUsers]) => {
       const startIndex = (currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
+      console.log('RXJS');
+      console.log('currentPage', currentPage);
+      console.log('filteredUsers', filteredUsers);
+      console.log('startIndex', startIndex);
+      console.log('endIndex', endIndex);
       return filteredUsers.slice(startIndex, endIndex);
     })
   );
 
-  searchUser(searchText: string): void {
+  public searchUser(searchText: string): void {
     this.searchInput$.next(searchText);
     if (this.currentPage$.value > this.firstPage) {
       this.currentPage$.next(this.firstPage);
     }
   }
 
-  goToPrevPage(): void {
+  public goToPrevPage(): void {
     this.currentPage$.next(Math.max(this.currentPage$.value - 1, 1));
   }
 
-  goToNextPage(): void {
+  public goToNextPage(): void {
     this.currentPage$.next(
       Math.min(this.currentPage$.value + 1, this.itemsPerPage + 1)
     );
