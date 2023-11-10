@@ -1,1 +1,20 @@
-<p>rxjs works!</p>
+<input 
+    [ngModel]="searchInput$ | async"
+    (ngModelChange)="searchUser($event)"
+    placeholder="Search"
+/>
+
+<ul>
+    <li *ngFor="let user of paginatedAndFilteredUsers$ | async">
+        {{ user.name }}
+    </li>
+</ul>
+
+<button (click)="goToPrevPage()">
+    Previous
+</button>
+<button (click)="goToNextPage()">
+    Next
+</button>
+<br><br>
+pag. {{ currentPage$ | async }}

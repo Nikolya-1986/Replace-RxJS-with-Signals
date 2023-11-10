@@ -1,4 +1,4 @@
-const users = [
+export const users = [
     { id: 1, name: 'Spiderman' },
     { id: 2, name: 'Hulk' },
     { id: 3, name: 'Wolverine' },
