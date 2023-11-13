@@ -1,0 +1,26 @@
+<ul>
+    <li *ngFor="let product of products">
+        {{ product.name }} - ${{ product.price }} - Last edited by: {{ product.lastEditedBy }}
+        <button (click)="removeItem(product)">
+            Remove
+        </button>
+    </li>
+</ul>
+<form (submit)="addProduct()">
+    <input
+        type="text"
+        [(ngModel)]="productName"
+        placeholder="Name"
+    />
+    <input
+        type="number"
+        [(ngModel)]="productPrice"
+        placeholder="Price"
+    />
+    <button type="submit">
+        Add
+    </button>
+</form>
+<p>
+    Total Price: $ {{ totalPrice() }}
+</p>

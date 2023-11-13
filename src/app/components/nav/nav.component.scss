@@ -1,3 +1,9 @@
-a {
-    margin: 0 1rem;
+ul {
+    display: flex;
+    list-style-type: none;
+
+    li {
+        padding-right: 1rem;
+        cursor: pointer;
+    }
 }

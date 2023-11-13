@@ -20,9 +20,9 @@ export const APP_ROUTES: Routes = [
             (m) => m.SignalComponent
         ),
     },
-    // {
-    //     path: 'flights',
-    //     loadChildren: () =>
-    //         import('./ui/flights/flights.routing').then((m) => m.FLIGHTS_ROUTES),
-    // },
+    {
+        path: 'cart',
+        loadChildren: () =>
+            import('./components/cart/cart.routes').then((m) => m.CART_ROUTES),
+    },
 ];
